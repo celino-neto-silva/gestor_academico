@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão de Edições</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <header>
+        <h1>GESTÃO DE EDIÇÕES</h1>
+        <nav>
+            <a href="/alunos">Alunos</a>
+            <a href="/cursos">Cursos</a>
+            <a href="/ucs">Unidades Curriculares</a>
+            <a href="#">Edições</a>
+            <a href="/matriculas">Matrículas</a>
+        </nav>
+    </header>
+    <main>
+        <h2>ADICIONAR EDIÇÃO</h2>
+        <section class="formulario" id="formulario_edicao">
+        <form th:action="@{/edicoes}" method="post" th:object="${novaEdicao}">
+            <label for="idnome_edicao">descrição:</label>
+            <input th:field="*{nome}" type="text" name="nome" id="idnome_edicao" required>
+
+            <label>curso:</label>
+            <select th:field="*{curso.id_curso}" size="4" required style="margin-right: 30px;" class="select-opts">
+                <option value="" class="option" disabled selected>Selecione o curso</option>
+                <option th:each="c : ${cursos}"
+                        th:value="${c.id_curso}"
+                        th:text="${c.nome}">
+                </option>
+            </select>
+
+            <br>
+            <br>
+
+            <label for="iddata_inicio">data de início:</label>
+            <input th:field="*{data_inicio}" type="date" name="data_inicio" id="iddata_inicio" required>
+
+            <label for="iddata_fim">data de fim:</label>
+            <input th:field="*{data_fim}" type="date" name="data_fim" id="iddata_fim" required>
+
+            <br>
+            <br>
+
+            <label for="idgrade_curricular">grade curricular:</label>
+            <select th:field="*{ucsIds}" id="idgrade_curricular" size="4" multiple class="select-opts" required>
+                <option value="">Selecione a(s) unidades curriculares pertencentes</option>
+                <option th:each="u : ${ucs}"
+                        th:value="${u.id_uc}"
+                        th:text="${u.nome}">
+                </option>
+            </select>
+
+            <button type="submit" class="btn-adicionar">
+                ADICIONAR
+            </button>
+        </form>
+        </section>
+
+        <br>
+
+        <h2>PESQUISAR EDIÇÃO</h2>
+        <section class="formulario" id="formulario_pesquisa_edicao">
+        <form th:action="@{/edicoes/pesquisar}" method="get" th:object="${novaEdicao}">
+            <label for="iddescricao">descrição:</label>
+            <input th:field="*{nome}" type="text" name="nome" id="iddescricao" required>
+            <button type="submit" class="btn-pesquisar">
+                PESQUISAR
+            </button>
+        </form>
+        </section>
+
+        <br>
+
+        <section class="lista" id="lista_edicao_pes" th:if="${edicoesPesquisadas != null}">
+            <table>
+                <thead>
+                    <tr>
+                        <th>descrição</th>
+                        <th>curso</th>
+                        <th>grade curricular</th>
+                        <th>duração</th>
+                    </tr>
+                    </thead>
+                <tbody>
+                    <tr th:each="e , iter : ${edicoesPesquisadas}">
+                        <td th:text="${e.nome}">descrição</td>
+                        <td th:text="${e.curso.nome}">curso</td>
+                        <td>
+                            <span th:each="u : ${e.ucs}">
+                                <span th:text="${u.nome}"></span><br>
+                            </span>
+                        </td>
+                        <td th:text="${e.data_inicio}"></td>
+                        <td th:text="${e.data_fim}"></td>
+                        <td th:text="${e.duracaoTotal}"></td>
+
+                        <td class="campo_menor">
+                            <form th:action="@{/edicoes/atualizar}" method="get">
+                                <input type="hidden" name="id_edicao" th:value="${e.id_edicao}">
+                                <button type="submit" class="btn-atualizar">
+                                    ATUALIZAR
+                                </button>
+                            </form>
+                        </td>
+                        <td class="campo_menor">
+                            <form th:action="@{/edicoes/remover}" method="post">
+                                <input type="hidden" name="id_edicao" th:value="${e.id_edicao}">
+                                <button type="submit" class="btn-remover">
+                                    REMOVER
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <h2>LISTAR EDIÇÕES</h2>
+        <section class="lista" id="lista_edicao">
+            <table>
+                <thead>
+                    <tr>
+                        <th>descrição</th>
+                        <th>curso</th>
+                        <th>grade curricular</th>
+                        <th>data de início</th>
+                        <th>data de fim</th>
+                        <th>duração</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="e , iter : ${edicoes}">
+                        <td th:text="${e.nome}">descrição</td>
+                        <td th:text="${e.curso.nome}">curso</td>
+                        <td>
+                            <span th:each="u : ${e.ucs}">
+                                <span th:text="${u.nome}"></span><br>
+                            </span>
+                        </td>
+                        <td th:text="${e.data_inicio}"></td>
+                        <td th:text="${e.data_fim}"></td>
+                        <td th:text="${e.duracaoTotal}"></td>
+                        <td class="campo_menor">
+                            <form th:action="@{/edicoes/atualizar}" method="get">
+                                <input type="hidden" name="id_edicao" th:value="${e.id_edicao}">
+                                <button type="submit" class="btn-atualizar">
+                                    ATUALIZAR
+                                </button>
+                            </form>
+                        </td>
+                        <td class="campo_menor">
+                            <form th:action="@{/edicoes/remover}" method="post">
+                                <input type="hidden" name="id_edicao" th:value="${e.id_edicao}">
+                                <button type="submit" class="btn-remover">
+                                    REMOVER
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </main>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão de Alunos</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <header>
+        <h1>GESTÃO DE UNIDADES CURRICULARES</h1>
+        <nav>
+            <a href="/alunos">Alunos</a>
+            <a href="/cursos">Cursos</a>
+            <a href="#">Unidades Curriculares</a>
+            <a href="/edicoes">Edições</a>
+            <a href="/matriculas">Matrículas</a>
+        </nav>
+    </header>
+    <main>
+        <h2>ADICIONAR UNIDADE CURRICULAR</h2>
+        <section class="formulario" id="formulario_uc">
+        <form th:action="@{/ucs}" method="post" th:object="${novaUc}">
+            <label for="idnome_uc">nome:</label>
+            <input type="text" name="nome" id="idnome_uc" required>
+
+            <label for="idduracao">duração:</label>
+            <input type="number" name="duracao" id="idduracao" min="1" required>
+
+            <button type="submit" class="btn-adicionar">
+                ADICIONAR
+            </button>
+        </form>
+        </section>
+
+        <br>
+
+        <h2>PESQUISAR UNIDADE CURRICULAR</h2>
+        <section class="formulario" id="formulario_pesquisa_uc">
+        <form th:action="@{/ucs/pesquisar}" method="get">
+            <label for="idnome_uc_pes">nome:</label>
+            <input type="text" name="nome" id="idnome_uc_pes" required>
+            <button type="submit" class="btn-pesquisar">
+                PESQUISAR
+            </button>
+        </form>
+        </section>
+
+        <br>
+
+        <section class="lista" id="lista_uc_pes" th:if="${ucsPesquisadas != null}">
+            <table>
+                <thead>
+                    <tr>
+                        <th>nome</th>
+                        <th>duração</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="u, iter : ${ucsPesquisadas}">
+                        <td th:text="${u.nome}">nome</td>
+                        <td th:text="${u.duracao}">duração</td>
+                        <td class="campo_menor">
+                            <form th:action="@{/ucs/atualizar}" method="get">
+                                <input type="hidden" name="id_uc" th:value="${u.id_uc}">
+                                <button type="submit" class="btn-atualizar">
+                                    ATUALIZAR
+                                </button>
+                            </form>
+                        </td>
+                        <td class="campo_menor">
+                            <form th:action="@{/ucs/remover}" method="post">
+                                <input type="hidden" name="id_uc" th:value="${u.id_uc}">
+                                <button type="submit" class="btn-remover">
+                                    REMOVER
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <br>
+
+        <h2>LISTAR UCS</h2>
+        <section id="lista_uc">
+            <table>
+                <thead>
+                <tr>
+                    <th>nome</th>
+                    <th>duração</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="u, iter : ${ucs}">
+                    <td th:text="${u.nome}">nome</td>
+                    <td th:text="${u.duracao}">duração</td>
+                    <td class="campo_menor">
+                        <form th:action="@{/ucs/atualizar}" method="get">
+                            <input type="hidden" name="id_uc" th:value="${u.id_uc}">
+                            <button type="submit" class="btn-atualizar">
+                                ATUALIZAR
+                            </button>
+                        </form>
+                    </td>
+                    <td class="campo_menor">
+                        <form th:action="@{/ucs/remover}" method="post">
+                            <input type="hidden" name="id_uc" th:value="${u.id_uc}">
+                            <button type="submit" class="btn-remover">
+                                REMOVER
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </section>
+    </main>
+</body>
+</html>

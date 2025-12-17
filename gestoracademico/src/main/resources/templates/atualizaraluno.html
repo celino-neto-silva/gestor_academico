@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Aluno</title>
+    <link rel="stylesheet" th:href="@{/css/updatestyle.css}">
+</head>
+<body>
+    <main class="principal">
+        <section class="conteudo">
+            <h2>Editar Aluno</h2>
+            <form th:action="@{/alunos/atualizar}" th:object="${aluno}" method="post">
+                <input type="hidden" th:field="*{id_aluno}">
+                <label>nome:</label>
+                <input type="text" th:field="*{nome}" required>
+
+                <label>email:</label>
+                <input type="email" th:field="*{email}" required>
+
+                <label>idade:</label>
+                <input type="number" th:field="*{idade}" required>
+
+                <button type="submit" class="btn-salvar">Salvar</button>
+            </form>
+            <a href="/alunos" class="voltar-link">Voltar</a>
+        </section>
+    </main>
+</body>
+</html>

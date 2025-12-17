@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Curso</title>
+    <link rel="stylesheet" th:href="@{/css/updatestyle.css}">
+</head>
+<body>
+<main class="principal">
+    <section class="conteudo">
+        <h2>Editar Curso</h2>
+        <form th:action="@{/cursos/atualizar}" th:object="${curso}" method="post">
+            <input type="hidden" th:field="*{id_curso}">
+
+            <label>título:</label>
+            <input type="text" th:field="*{nome}" required>
+
+            <label>nível:</label>
+            <input type="number" th:field="*{nivel}" min="3" max="9" required>
+            <button type="submit" class="btn-salvar">Salvar</button>
+        </form>
+        <a href="/cursos" class="voltar-link">Voltar</a>
+    </section>
+</main>
+</body>
+</html>

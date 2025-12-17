@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão de Alunos</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <header>
+        <h1>GESTÃO DE CURSOS</h1>
+        <nav>
+            <a href="/alunos">Alunos</a>
+            <a href="#">Cursos</a>
+            <a href="/ucs">Unidades Curriculares</a>
+            <a href="/edicoes">Edições</a>
+            <a href="/matriculas">Matrículas</a>
+        </nav>
+    </header>
+    <main>
+        <h2>ADICIONAR CURSO</h2>
+        <section class="formulario" id="formulario_curso">
+        <form th:action="@{/cursos}" method="post" th:object="${novoCurso}">
+            <label for="idnomecurso">título:</label>
+            <input th:field="*{nome}" type="text" name="nome" id="idnomecurso" required>
+
+            <label for="idnivel">nível:</label>
+            <input th:field="*{nivel}" type="number" name="nivel" id="idnivel" min="3" max="9" required>
+            <br>
+            <button type="submit" class="btn-adicionar">
+                ADICIONAR
+            </button>
+        </form>
+        </section>
+
+        <br>
+
+        <h2>PESQUISAR CURSO</h2>
+        <section class="formulario" id="formulario_pesquisa_curso">
+        <form th:action="@{/cursos/pesquisar}" method="get" th:object="${novoCurso}">
+            <label for="idtitulo_pes">título:</label>
+            <input th:field="*{nome}" type="text" name="titulo_pes" id="idtitulo_pes" required>
+            <button type="submit" class="btn-pesquisar">
+                PESQUISAR
+            </button>
+        </form>
+        </section>
+
+        <section class="lista" id="lista_curso_pes" th:if="${cursosPesquisados  != null}">
+            <h2>LISTAR CURSOS</h2>
+            <table>
+                <thead>
+                <tr>
+                    <th>título</th>
+                    <th>nível</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="c, iter : ${cursosPesquisados}">
+                    <td th:text="${c.nome}">título</td>
+                    <td th:text="${c.nivel}">nível</td>
+                    <td class="campo_menor">
+                        <form th:action="@{/cursos/atualizar}" method="get">
+                            <input type="hidden" name="id_curso" th:value="${c.id_curso}">
+                            <button type="submit" class="btn-atualizar">
+                                ATUALIZAR
+                            </button>
+                        </form>
+                    </td>
+                    <td class="campo_menor">
+                        <form th:action="@{/cursos/remover}" method="post">
+                            <input type="hidden" name="id_curso" th:value="${c.id_curso}">
+                            <button type="submit" class="btn-remover">
+                                REMOVER
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </section>
+        <br>
+
+
+        <section class="lista" id="lista_curso">
+            <h2>LISTAR CURSOS</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>título</th>
+                        <th>nível</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="c : ${cursos}">
+                        <td th:text="${c.nome}">título</td>
+                        <td th:text="${c.nivel}">nível</td>
+                        <td class="campo_menor">
+                            <form th:action="@{/cursos/atualizar}" method="get">
+                                <input type="hidden" name="id_curso" th:value="${c.id_curso}">
+                                <button type="submit" class="btn-atualizar">
+                                    ATUALIZAR
+                                </button>
+                            </form>
+                        </td>
+                        <td class="campo_menor">
+                            <form th:action="@{/cursos/remover}" method="post">
+                                <input type="hidden" name="id_curso" th:value="${c.id_curso}">
+                                <button type="submit" class="btn-remover">
+                                    REMOVER
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </main>
+</body>
+</html>

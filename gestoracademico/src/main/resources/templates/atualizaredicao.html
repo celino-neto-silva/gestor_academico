@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Edicao</title>
+    <link rel="stylesheet" th:href="@{/css/updatestyle.css}">
+</head>
+<body>
+<main class="principal">
+    <section class="conteudo">
+        <h2>Editar Edição</h2>
+        <form th:action="@{/edicoes/atualizar}" th:object="${edicao}" method="post">
+            <input type="hidden" th:field="*{id_edicao}">
+
+            <label>descrição:</label>
+            <input th:field="*{nome}" type="text">
+
+            <label>curso:</label>
+            <select th:field="*{curso.id_curso}" size="4" style="margin-right: 30px;">
+                <option value="" class="option" disabled selected>Selecione o curso</option>
+                <option th:each="c : ${cursos}"
+                        th:value="${c.id_curso}"
+                        th:text="${c.nome}">
+                </option>
+            </select>
+
+            <label>data de início:</label>
+            <input th:field="*{data_inicio}" type="date">
+
+            <label>data de fim:</label>
+            <input th:field="*{data_fim}" type="date">
+            <br>
+            <label>grade curricular:</label>
+            <select th:field="*{ucsIds}" name="ucs" id="idgrade_curricular" size="4" multiple>
+                <option value="">Selecione a(s) unidades curriculares pertencentes</option>
+                <option th:each="u : ${ucs}"
+                        th:value="${u.id_uc}"
+                        th:text="${u.nome}">
+                </option>
+            </select>
+            <button type="submit" class="btn-salvar">Salvar</button>
+        </form>
+        <a href="/edicoes" class="voltar-link">Voltar</a>
+    </section>
+</main>
+</body>
+</html>

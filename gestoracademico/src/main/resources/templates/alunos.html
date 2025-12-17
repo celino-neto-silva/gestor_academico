@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão de Alunos</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <header>
+        <h1>GESTÃO DE ALUNOS</h1>
+        <nav>
+            <a href="#">Alunos</a>
+            <a href="/cursos">Cursos</a>
+            <a href="/ucs">Unidades Curriculares</a>
+            <a href="/edicoes">Edições</a>
+            <a href="/matriculas">Matrículas</a>
+        </nav>
+    </header>
+    <main>
+
+        <section class="formulario" id="formulario_cadastro">
+            <h2>ADICIONAR ALUNO</h2>
+            <form th:action="@{/alunos}" method="post" th:object="${novoAluno}">
+                <label for="idnome">nome:</label>
+                <input th:field="*{nome}" type="text" name="nome" id="idnome" minlength="1" maxlength="20" required>
+
+                <label for="idemail">email:</label>
+                <input th:field="*{email}" type="email" name="email" id="idemail" required>
+
+                <label for="ididade">idade:</label>
+                <input th:field="*{idade}"  type="number" name="idade" id="ididade" min="18" required>
+
+                <button type="submit" class="btn-adicionar">
+                    ADICIONAR
+                </button>
+            </form>
+        </section>
+
+        <br>
+
+        <section class="formulario" id="formulario_pesquisa">
+            <h2>PESQUISAR ALUNO</h2>
+            <form th:action="@{/alunos/pesquisar}" method="get" th:object="${novoAluno}">
+                <label for="idnome_pes">nome:</label>
+                <input th:field="*{nome}" type="text" name="nome_pes" id="idnome_pes" required>
+                <button type="submit" class="btn-pesquisar">
+                    PESQUISAR
+                </button>
+            </form>
+        </section>
+
+        <section class="lista" id="lista-aluno" th:if="${alunosPesquisados != null}">
+            <table>
+                <thead>
+                <tr>
+                    <th>nome</th>
+                    <th>email</th>
+                    <th>idade</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="a, iter : ${alunosPesquisados}">
+                    <td th:text="${a.nome}">Nome</td>
+                    <td th:text="${a.email}">Email</td>
+                    <td th:text="${a.idade}">0</td>
+                    <td class="campo_menor">
+                        <form th:action="@{/alunos/atualizar}" method="get">
+                            <input type="hidden" name="id_aluno" th:value="${a.id_aluno}">
+                            <button type="submit" class="btn-atualizar">
+                                ATUALIZAR
+                            </button>
+                        </form>
+                    </td>
+                    <td class="campo_menor">
+                        <form th:action="@{/alunos/remover}" method="post">
+                            <input type="hidden" name="id_aluno" th:value="${a.id_aluno}">
+                            <button type="submit" class="btn-remover">
+                                REMOVER
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <br>
+        <section class="lista" id="lista">
+            <h2>LISTAR ALUNOS</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>nome</th>
+                        <th>email</th>
+                        <th>idade</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="a, iter : ${alunos}">
+                        <td th:text="${a.nome}">Nome</td>
+                        <td th:text="${a.email}">Email</td>
+                        <td th:text="${a.idade}">0</td>
+                        <td class="campo_menor">
+                            <form th:action="@{/alunos/atualizar}" method="get">
+                                <input type="hidden" name="id_aluno" th:value="${a.id_aluno}">
+                                <button type="submit" class="btn-atualizar">
+                                    ATUALIZAR
+                                </button>
+                            </form>
+                        </td>
+                        <td class="campo_menor">
+                            <form th:action="@{/alunos/remover}" method="post">
+                                <input type="hidden" name="id_aluno" th:value="${a.id_aluno}">
+                                <button type="submit" class="btn-remover">
+                                    REMOVER
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </main>
+    <!--
+    <footer>
+        <p>Site desenvolvido com Spring Boot + Spring Data JPA e Thymeleaf.</p>
+    </footer>
+    -->
+</body>
+</html>
